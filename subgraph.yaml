@@ -1,0 +1,47 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ATokenWithDelegation
+    network: mainnet
+    source:
+      address: "0xA700b4eB416Be35b2911fd5Dee80678ff64fF6C9"
+      abi: ATokenWithDelegation
+      startBlock: 16496810
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - BalanceTransfer
+        - Burn
+        - DelegateChanged
+        - EIP712DomainChanged
+        - Initialized
+        - Mint
+        - Transfer
+      abis:
+        - name: ATokenWithDelegation
+          file: ./abis/ATokenWithDelegation.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: BalanceTransfer(indexed address,indexed address,uint256,uint256)
+          handler: handleBalanceTransfer
+        - event: Burn(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleBurn
+        - event: DelegateChanged(indexed address,indexed address,uint8)
+          handler: handleDelegateChanged
+        - event: EIP712DomainChanged()
+          handler: handleEIP712DomainChanged
+        - event: Initialized(indexed address,indexed address,address,address,uint8,string,string,bytes)
+          handler: handleInitialized
+        - event: Mint(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleMint
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/a-token-with-delegation.ts
